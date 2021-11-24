@@ -44,7 +44,6 @@ int main() {
                 best = i;
             }
         }
-        cout << prices[best] << " " << amounts[best] << endl;
         while (needed > 0) { 
             cost += prices[best];
             needed--;
@@ -57,7 +56,7 @@ int main() {
         }
     }
 
-    fout << cost << endl; // NOT REACHING THIS LINE
+    fout << cost << endl;
 
     return 0;
 
