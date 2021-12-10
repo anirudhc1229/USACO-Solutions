@@ -12,8 +12,8 @@ LANG: C++
 
 using namespace std;
 
-class Config 
-{ 
+class Config { 
+    
     int num1;
     int num2;
     int pp1;
