@@ -19,10 +19,17 @@ int main() {
 
     string s, t;
     fin >> s >> t;
+    
+    string ans;
 
-    while (s.find(t) != -1) s.erase(s.find(t), t.length());
+    for (int i = 0; i < s.length(); i++) {
+        ans += s[i];
+        if (ans.length() > t.length() && ans.substr(ans.length() - t.length()) == t) {
+            ans.resize(ans.length() - t.length());
+        }
+    }
 
-    fout << s << endl;
+    fout << ans << endl;
 
     return 0;
 
