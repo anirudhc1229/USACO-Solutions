@@ -6,89 +6,68 @@ LANG: C++
 
 #include <iostream>
 #include <fstream>
-#include <string>
-#include <vector>
-#include <algorithm>
-
 using namespace std;
+#define MAX_N 12
 
-struct Wormhole {
-    int x;
-    int y;
-    bool paired;
-    Wormhole* next;
-    Wormhole* partner;
-};
+int N, X[MAX_N+1], Y[MAX_N+1];
+int partner[MAX_N+1];
+int next_on_right[MAX_N+1];
 
-bool check(vector<Wormhole> wormholes, int N) {
-
-    for (int start = 0; start < N; start++) {
-        Wormhole* current = &wormholes[start];
-        for (int i = 0; i < N; i++) {
-            cout << i << endl; cout << current->next->partner << endl;
-            current = current->next->partner; // PROBLEM HERE
-        }
-        if (current != NULL) return true;
-    }
-
-    return false;
-
+bool cycle_exists(void)
+{
+  for (int start=1; start<=N; start++) {
+    // does there exist a cylce starting from start
+    int pos = start;
+    for (int count=0; count<N; count++)
+      pos = next_on_right[partner[pos]];
+    if (pos != 0) return true;
+  }
+  return false;
 }
 
-void dfs(vector<Wormhole> wormholes, int N, int& ans) {
+// count all solutions
+int solve(void) 
+{
+  // find first unpaired wormhole
+  int i, total=0;
+  for (i=1; i<=N; i++) 
+    if (partner[i] == 0) break;
 
-    int first;
-    for (first = 0; first < N && wormholes[first].paired; first++);
-    if (first == N) {
-        if (check(wormholes, N)) ans++;
+  // everyone paired?
+  if (i > N) {
+    if (cycle_exists()) return 1;
+    else return 0;
+  }
+
+  // try pairing i with all possible other wormholes j
+  for (int j=i+1; j<=N; j++)
+    if (partner[j] == 0) {
+      // try pairing i & j, let recursion continue to 
+      // generate the rest of the solution
+      partner[i] = j;
+      partner[j] = i;
+      total += solve();
+      partner[i] = partner[j] = 0;
     }
-
-    for (int second = first + 1; second < N; second++) {
-        if (!wormholes[second].paired) {
-            wormholes[first].paired = wormholes[second].paired = true;
-            wormholes[first].partner = &wormholes[second]; wormholes[second].partner = &wormholes[first];
-            dfs(wormholes, N, ans);
-            wormholes[first].paired = wormholes[second].paired = false;
-        }
-    } 
-
+  return total;
 }
 
-int main() {
+int main(void)
+{
+  ifstream fin("wormhole.in");
+  fin >> N;
+  for (int i=1; i<=N; i++) fin >> X[i] >> Y[i];
+  fin.close();
+  
+  for (int i=1; i<=N; i++) // set next_on_right[i]...
+    for (int j=1; j<=N; j++)
+      if (X[j] > X[i] && Y[i] == Y[j]) // j right of i...
+	if (next_on_right[i] == 0 ||
+	    X[j]-X[i] < X[next_on_right[i]]-X[i])
+	  next_on_right[i] = j;
 
-    ifstream fin("wormhole.in");
-    ofstream fout("wormhole.out");
-
-    int N;  
-    fin >> N;
-    vector<Wormhole> wormholes;
-    for (int i = 0; i < N; i++) {
-        Wormhole wh;
-        fin >> wh.x >> wh.y;
-        wormholes.push_back(wh);
-    }
-
-    // find pairs of wormholes that can be traversed without infinite looping
-    
-    int ans = N;
-    
-    for (int i = 0; i < wormholes.size(); i++) {
-        for (int j = 0; j < wormholes.size(); j++) {
-            // cant map wormhole to itself
-            // cow only moves in +x direction, so a.x < b.x && a.y == b.y
-            // this mapping is only valid if a doesn't have a pair or b comes before current pairing (meaning a would hit b first instead of current)
-            if (i != j) {
-                Wormhole a = wormholes[i];
-                Wormhole b = wormholes[j];
-                if (a.x < b.x && a.y == b.y && (a.next == NULL || b.x < a.next->x)) a.next = &b;
-            }
-        }
-    }
-
-    dfs(wormholes, N, ans);
-
-    fout << ans << endl;
-
-    return 0;
-
+  ofstream fout("wormhole.out");
+  fout << solve() << "\n";
+  fout.close();
+  return 0;
 }
