@@ -26,7 +26,7 @@ int main() {
     int N;
     fin >> N; 
     Cell start;
-    start.x, start.y, start.t = 0;
+    start.x = 0, start.y = 0, start.t = 0;
     vector<Cell> cells{start};
     int fjx = 0, fjy = 0, fjt = 0;
     vector<int> revisit;
