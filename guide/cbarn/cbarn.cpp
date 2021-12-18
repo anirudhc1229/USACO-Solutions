@@ -19,12 +19,8 @@ int main() {
 
     int N;
     fin >> N;
-    vector<int> rooms;
-    for (int i = 0; i < N; i++) {
-        int room;
-        fin >> room;
-        rooms.push_back(room);
-    }
+    vector<int> rooms(N);
+    for (int i = 0; i < N; i++) fin >> rooms[i];
 
     int ans = 1000000000;
 
