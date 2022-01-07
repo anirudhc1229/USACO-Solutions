@@ -30,13 +30,16 @@ int main() {
 
     int ans = 0;
 
-    for (auto const& a : ctos) {
-        for (auto const& b : ctos) {
-            if (a.first == b.second && b.first == a.second && a.second != b.second) ans++;
+    for (auto a = ctos.begin(); a != ctos.end(); a++) {
+        for (auto b = a; b != ctos.end(); b++) {
+            if (a->first == b->second && b->first == a->second && a->second != b->second) {
+                //cout << a->first << " " << a->second << " : " << b->first << " " << b->second << endl;
+                ans++;
+            }
         }
     }
 
-    fout << ans/2 << endl;
+    fout << ans << endl;
 
     return 0;
 

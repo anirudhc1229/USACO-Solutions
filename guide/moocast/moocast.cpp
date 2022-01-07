@@ -17,7 +17,7 @@ struct Cow {
     int x;
     int y;
     int power;
-    vector<pair<int, int>> reachable;
+    vector<int> reachable;
     bool visited;
 };
 
@@ -28,9 +28,9 @@ int transmitted;
 void dfs(int cur) {
     transmitted++;
     cows[cur].visited = true;
-    for (auto x : cows[cur].reachable) {
-        if (cows[x.first].visited) continue;
-        dfs(x.first);
+    for (int c : cows[cur].reachable) {
+        if (cows[c].visited) continue;
+        dfs(c);
     }
 }
 
@@ -51,8 +51,8 @@ int main() {
     for (int c1 = 0; c1 < N; c1++) {
         for (int c2 = 0; c2 < N; c2++) {
             double dist = sqrt(pow(cows[c2].x - cows[c1].x, 2) + pow(cows[c2].y - cows[c1].y, 2));
-            if (cows[c1].power >= dist) cows[c1].reachable.push_back({c2, dist});
-            if (cows[c2].power >= dist) cows[c2].reachable.push_back({c1, dist});
+            if (cows[c1].power >= dist) cows[c1].reachable.push_back(c2);
+            if (cows[c2].power >= dist) cows[c2].reachable.push_back(c1);
         }
     }
 
