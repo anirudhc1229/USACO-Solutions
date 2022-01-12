@@ -22,15 +22,11 @@ int main() {
     fin >> N;
     string colors;
     fin >> colors;
-
     int K;
-    unordered_set<string> sequences;
 
     for (K = 1; K < N; K++) {
-        
-        sequences.clear();
+        unordered_set<string> sequences;
         bool good = true;
-
         for (int i = 0; i <= N - K; i++) {
             string seq = colors.substr(i, K);
             if (sequences.count(seq)) {
@@ -39,9 +35,7 @@ int main() {
             }
             sequences.insert(seq);
         }
-
         if (good) break;
-    
     }
 
     fout << K << endl;
