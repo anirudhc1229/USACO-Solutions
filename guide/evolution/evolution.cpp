@@ -58,7 +58,7 @@ int main() {
             }
         }
     }
-
+    
     fout << "yes" << endl;
 
     return 0;

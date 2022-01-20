@@ -26,8 +26,9 @@ int main() {
 
     for (int i = 0; i < K; i++) {
         reverse(cows.begin() + a1 - 1, cows.begin() + a2);
-        reverse(cows.begin() + b1 - 1, cows.begin() + b2);
         for (int c : cows) cout << c; cout << endl;
+        reverse(cows.begin() + b1 - 1, cows.begin() + b2);
+        // for (int c : cows) cout << c; cout << endl;
     }
 
     for (int c : cows) fout << c << endl;
