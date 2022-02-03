@@ -19,7 +19,7 @@ int main() {
     ofstream fout("yotc.out");
 
     int N;
-    fin >> N;
+    cin >> N;
 
     map<string, int> zodiac;
     zodiac["Ox"] = 0;
@@ -41,7 +41,7 @@ int main() {
     for (int i = 0; i < N; i++) {
 
         string cur, time, animal, last, s;
-        fin >> cur >> s >> s >> time >> animal >> s >> s >> last;
+        cin >> cur >> s >> s >> time >> animal >> s >> s >> last;
         
         if (time == "previous") {
             if (last == "Bessie") ans += zodiac[animal] - 12;
@@ -60,7 +60,7 @@ int main() {
         }
 
         if (cur == "Elsie") {
-            fout << abs(ans) << endl;
+            cout << abs(ans) << endl;
             break;
         }
 

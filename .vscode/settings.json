@@ -47,6 +47,8 @@
         "unordered_set": "cpp",
         "regex": "cpp",
         "valarray": "cpp",
-        "set": "cpp"
-    }
+        "set": "cpp",
+        "random": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "Enabled"
 }

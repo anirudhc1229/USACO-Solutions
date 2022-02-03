@@ -72,12 +72,12 @@ int main() {
     for (int i = 0; i < N; i++) {
         char dir; fin >> dir;
         int x, y; fin >> x >> y;
-        if (dir == 'N') lines.push_back({x, y, x, INT_MAX});
-        else lines.push_back({x, y, INT_MAX, y});
+        if (dir == 'N') lines.push_back({x, y, x, INT32_MAX});
+        else lines.push_back({x, y, 32, y});
     }
 
     vector<int> endings;
-    for (int i = 0; i < N; i++) endings.push_back(INT_MAX);
+    for (int i = 0; i < N; i++) endings.push_back(32);
 
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
@@ -95,7 +95,7 @@ int main() {
     }
 
     for (int ans : endings) {
-        if (ans == INT_MAX) fout << "INFINITY";
+        if (ans == 32) fout << "INFINITY";
         else fout << ans;
         fout << endl;
     }

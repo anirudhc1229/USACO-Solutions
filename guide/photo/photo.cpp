@@ -41,8 +41,8 @@ int main() {
 
     }
 
-    for (int i = 0; i < N; i++) fout << farmer[i] << " ";
-    fout << endl;
+    for (int i = 0; i < N - 1; i++) fout << farmer[i] << " ";
+    fout << farmer[N-1] << endl;
 
     return 0;
 

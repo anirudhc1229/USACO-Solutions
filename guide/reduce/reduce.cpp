@@ -9,6 +9,7 @@ LANG: C++
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <cmath>
 
 using namespace std;
 
@@ -31,25 +32,31 @@ int main() {
         cows[i] = c;
     }
 
-    int avg = 0;
-    for (Cow c : cows) avg += c.x + c.y;
-    avg /= N;
+    // remove the cow furthest from the average
 
-    int remove = 0;
-    for (int i = 1; i < N; i++) {
-        if (cows[i].x + cows[i].y - avg > cows[remove].x + cows[remove].y - avg) {
-            remove = i;
-        }
+    double avgX = 0;
+    double avgY = 0;
+    for (Cow c : cows) {
+        avgX += c.x;
+        avgY += c.y;
     }
+    avgX /= N;
+    avgY /= N;
 
-    cows.erase(cows.begin() + remove);
+    cout << avgX << " " << avgY << endl;
+
+    sort(cows.begin(), cows.end(), [&](Cow& a, Cow& b) -> bool {
+        return sqrt(pow(a.x - avgX, 2) + pow(a.y - avgY, 2)) < sqrt(pow(b.x - avgX, 2) + pow(b.y - avgY, 2));
+    });
+    for (Cow c : cows) cout << c.x << " " << c.y << endl;
+    cows.erase(cows.end() - 1);
 
     int maxX = 0, maxY = 0, minX = 40000, minY = 40000;
     for (Cow c : cows) {
-        if (c.x > maxX) maxX = c.x;
-        if (c.y > maxY) maxY = c.y;
-        if (c.x < minX) minX = c.x;
-        if (c.y < minY) minY = c.y;
+        maxX = max(maxX, c.x);
+        maxY = max(maxY, c.y);
+        minX = min(minX, c.x);
+        minY = min(minY, c.y);
     }
 
     fout << (maxX - minX) * (maxY - minY) << endl;

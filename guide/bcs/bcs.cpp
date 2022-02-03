@@ -17,7 +17,7 @@ int N, K;
 struct Piece {
     bool grid[9][9];
     int parent;
-}
+};
 
 bool overlap(Piece a, Piece b) {
     for (int row = 0; row < N; row++)

@@ -32,10 +32,9 @@ int main() {
     for (int i = 1; i < N; i++)
         prefix[i] = prefix[i-1] + broken[i];
     
-    int ans = prefix[K-1];
-    for (int i = 1; i < N - K; i++) {
+    int ans = INT32_MAX;
+    for (int i = 1; i < N - K; i++) 
         ans = min(ans, prefix[i+K-1] - prefix[i-1]);
-    }
 
     fout << ans << endl;
 

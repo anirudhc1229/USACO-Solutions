@@ -18,11 +18,11 @@ int main() {
     ofstream fout("daisy.out");
 
     int N;
-    fin >> N;
+    cin >> N;
     vector<int> petals;
     for (int i = 0; i < N; i++) {
         int p;
-        fin >> p;
+        cin >> p;
         petals.push_back(p);
     }
 
@@ -44,7 +44,7 @@ int main() {
         }
     }
 
-    fout << ans << endl;
+    cout << ans << endl;
 
     return 0;
 
