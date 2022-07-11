@@ -8,37 +8,24 @@ LANG: C++
 using namespace std;
 #define endl '\n'
 typedef long long ll;
+typedef pair<int, int> pii;
+#include <unordered_set>
 
-int N;
-int grid[251][251];
-bool visited[251][251];
+int n;
+int ids[251][251];
+bool vis[251][251];
+unordered_set<int> cows;
 
-void dfs1(int i, int j, int c) {
-    
-    if (i < 0 || i >= N || j < 0 || j >= N) return;
-    if (grid[i][j] != c) return;
-    if (visited[i][j]) return;
-
-    visited[i][j] = true;
-    dfs1(i + 1, j, c);
-    dfs1(i - 1, j, c);
-    dfs1(i, j + 1, c);
-    dfs1(i, j - 1, c);
-
+int dfs1(int i, int j, int id) {
+    if (i < 0 || i >= n || j < 0 || j >= n || vis[i][j] || ids[i][j] != id) return 0;
+    vis[i][j] = true;
+    return 1 + dfs1(i + 1, j, id) + dfs1(i, j + 1, id) + dfs1(i - 1, j, id) + dfs1(i, j - 1, id);
 }
 
-void dfs2(int i, int j, int c1, int c2) {
-    
-    if (i < 0 || i >= N || j < 0 || j >= N) return;
-    if (grid[i][j] != c1 && grid[i][j] != c2) return;
-    if (visited[i][j]) return;
-
-    visited[i][j] = true;
-    dfs2(i + 1, j, c1, c2);
-    dfs2(i - 1, j, c1, c2);
-    dfs2(i, j + 1, c1, c2);
-    dfs2(i, j - 1, c1, c2);
-
+int dfs2(int i, int j, int id1, int id2) {
+    if (i < 0 || i >= n || j < 0 || j >= n || vis[i][j] || (ids[i][j] != id1 && ids[i][j] != id2)) return 0;
+    vis[i][j] = true;
+    return 1 + dfs2(i + 1, j, id1, id2) + dfs2(i, j + 1, id1, id2) + dfs2(i - 1, j, id1, id2) + dfs2(i, j - 1, id1, id2);
 }
 
 int main() {
@@ -48,59 +35,30 @@ int main() {
     ifstream fin("multimoo.in");
     ofstream fout("multimoo.out");
 
-    fin >> N;
-    set<int> cows;
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            fin >> grid[i][j];
-            cows.insert(grid[i][j]);
+    fin >> n;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            fin >> ids[i][j];
+            cows.insert(ids[i][j]);
         }
     }
 
-    int one = 0;
-    int c1 = 0;
-    for (int c : cows) {
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                if (grid[i][j] == c) {
-                    for (int k = 0; k < N; k++) 
-                        for (int l = 0; l < N; l++) 
-                            visited[k][l] = false;
-                    dfs1(i, j, c);
-                    int sz = 0;
-                    for (int k = 0; k < N; k++)
-                        for (int l = 0; l < N; l++)
-                            if (visited[k][l]) sz++;
-                    if (sz > one) {
-                        one = sz;
-                        c1 = c;
-                    }
-                }
-            }
-        }
-    }
-    fout << one << endl;
+    memset(vis, false, sizeof vis);
+    int best1 = 0;
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            if (!vis[i][j]) best1 = max(best1, dfs1(i, j, ids[i][j]));
+    fout << best1 << endl;
 
-    int two = 0;
-    for (int c2 : cows) {
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                if (grid[i][j] == c1 || grid[i][j] == c2) {
-                    for (int k = 0; k < N; k++) 
-                        for (int l = 0; l < N; l++) 
-                            visited[k][l] = false;
-                    dfs2(i, j, c1, c2);
-                    int sz = 0;
-                    for (int k = 0; k < N; k++)
-                        for (int l = 0; l < N; l++)
-                            if (visited[k][l]) sz++;
-                    if (sz > two) two = sz;
-                }
-            }
-        }
+    int best2 = 0;
+    for (auto id2 : cows) {
+        memset(vis, false, sizeof vis);
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                if (!vis[i][j] && ids[i][j] != id2) best2 = max(best2, dfs2(i, j, ids[i][j], id2));
     }
-    fout << two << endl; 
-    
+    fout << best2 << endl;
+
     return 0;
 
 }
