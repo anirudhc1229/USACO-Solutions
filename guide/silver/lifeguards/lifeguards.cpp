@@ -22,11 +22,11 @@ int main() {
     ifstream fin("lifeguards.in");
     ofstream fout("lifeguards.out");
 
-    int N; fin >> N;
+    int N; cin >> N;
     vector<Event> events;
     for (int i = 0; i < N; i++) {
         int f, s;
-        fin >> f >> s;
+        cin >> f >> s;
         events.push_back({i, f, true});
         events.push_back({i, s, false});
     }
@@ -52,7 +52,7 @@ int main() {
 
     }
 
-    fout << totalTime - *min_element(alone.begin(), alone.end()) << endl;
+    cout << totalTime - *min_element(alone.begin(), alone.end()) << endl;
 
     return 0;
 

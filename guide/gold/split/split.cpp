@@ -53,13 +53,13 @@ int main() {
     ifstream fin("split.in");
     ofstream fout("split.out");
 
-    fin >> N;
+    cin >> N;
     cows.resize(N);
     for (pii& c : cows) fin >> c.first >> c.second;
     sweep();
     for (pii& c : cows) swap(c.first, c.second);
     sweep();
-    fout << ans << endl;
+    cout << ans << endl;
 
     return 0;
 

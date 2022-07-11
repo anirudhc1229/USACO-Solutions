@@ -17,22 +17,22 @@ int main() {
     ofstream fout("rental.out");
 
     int N, M, R;
-    fin >> N >> M >> R;
+    cin >> N >> M >> R;
     vector<int> cows(N);
-    for (int i = 0; i < N; i++) fin >> cows[i];
+    for (int i = 0; i < N; i++) cin >> cows[i];
     vector<pair<int, int>> orders(M);
-    for (int i = 0; i < M; i++) fin >> orders[i].first >> orders[i].second;
+    for (int i = 0; i < M; i++) cin >> orders[i].first >> orders[i].second;
     vector<int> rentals(R);
-    for (int i = 0; i < R; i++) fin >> rentals[i];
+    for (int i = 0; i < R; i++) cin >> rentals[i];
 
     sort(cows.begin(), cows.end(), greater<int>());
     sort(orders.begin(), orders.end(), 
         [](auto& a, auto&b) -> bool {return a.second > b.second;});
     sort(rentals.begin(), rentals.end(), greater<int>());
 
-    for (int c : cows) cout << c << " "; cout << endl;
-    for (auto o : orders) cout << o.first << " " << o.second << endl;
-    for (int r : rentals) cout << r << " "; cout << endl;
+    // for (int c : cows) cout << c << " "; cout << endl;
+    // for (auto o : orders) cout << o.first << " " << o.second << endl;
+    // for (int r : rentals) cout << r << " "; cout << endl;
 
     int ans = 0;
     for (int i = 0; i < N; i++) { // breakpoint of using orders vs using rentals
@@ -54,7 +54,7 @@ int main() {
         ans = max(ans, money);
     }
 
-    fout << ans << endl;
+    cout << ans << endl;
 
     return 0;
 
