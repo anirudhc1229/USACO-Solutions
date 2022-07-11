@@ -15,7 +15,7 @@ int fj[100001];
 int dp[100001][21][3];
 
 int solve(int i, int s, int cur) {
-    if (i == n) return 0;
+    if (i == n) return dp[i][s][cur] = 0;
     if (dp[i][s][cur] != -1) return dp[i][s][cur];
     bool win = cur == 0 && fj[i] == 2 || cur == 1 && fj[i] == 0 || cur == 2 && fj[i] == 1;
     int no_switch = solve(i + 1, s, cur);
