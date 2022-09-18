@@ -10,45 +10,19 @@ using namespace std;
 typedef long long ll;
 typedef pair<int, int> pii;
 
-int N;
+int n;
 vector<int> adj[100001];
-int infected[100001];
-bool visited[100001];
-int days;
 
-void dfs(int cur, int d) {
-
-    cout << days << endl;
-    visited[cur] = true;
-    if (d == days) return;
-    
-    infected[cur] *= 2;
-    dfs(cur, d + 1);
-    infected[cur] /= 2;
-
+int dfs(int cur, int parent) {
+    int days = 0;
+    int children = 0;
     for (int a : adj[cur]) {
-        if (visited[a] || infected[cur] <= 1) continue;
-        infected[a]++;
-        infected[cur]--;
-        dfs(a, d + 1);
-        infected[a]--;
-        infected[cur]++;
+        if (a == parent) continue;
+        children++;
+        days += 1 + dfs(a, cur);
     }
-
-}
-
-bool check(int mid) {
-
-    fill(infected, infected + N, false);
-    fill(visited, visited + N, false);
-    infected[0] = 1;
-    days = mid;
-    
-    dfs(0, 1); // maybe use d = 0 instead?
-    for (int i = 0; i < N; i++)
-        if (!infected[i]) return false;
-    return true;
-
+    days += ceil(log2(children + 1)); // bit length
+    return days;
 }
 
 int main() {
@@ -58,22 +32,15 @@ int main() {
     ifstream fin("cowntagion.in");
     ofstream fout("cowntagion.out");
 
-    fin >> N;
-    for (int i = 0; i < N; i++) {
-        int a, b;
-        fin >> a >> b;
-        adj[a-1].push_back(b-1);
-        adj[b-1].push_back(a-1);
+    cin >> n;
+    for (int i = 0; i < n - 1; i++) {
+        int a, b; cin >> a >> b;
+        a--; b--;
+        adj[a].push_back(b);
+        adj[b].push_back(a);
     }
 
-    int lo = 0, hi = INT32_MAX;
-    while (lo < hi) {
-        int mid = lo + (hi - lo) / 2;
-        if (check(mid)) hi = mid;
-        else lo = mid + 1;
-    }
-
-    fout << lo << endl;
+    cout << dfs(0, -1) << endl;
 
     return 0;
 
