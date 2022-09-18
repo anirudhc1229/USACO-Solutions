@@ -48,10 +48,10 @@ int main() {
     ifstream fin("perimeter.in");
     ofstream fout("perimeter.out");
 
-    fin >> N;
+    cin >> N;
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
-            char c; fin >> c;
+            char c; cin >> c;
             ice[i][j] = c == '#';
         }
     }
@@ -72,7 +72,7 @@ int main() {
         }
     }
     
-    fout << best_a << " " << best_p << endl;
+    cout << best_a << " " << best_p << endl;
 
     return 0;
 
